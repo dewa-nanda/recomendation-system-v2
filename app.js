@@ -2,7 +2,6 @@ import createError from 'http-errors';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-import firebase from './config/firebase.js';
 import dotenv from 'dotenv';
 
 // routes
@@ -13,8 +12,6 @@ import address from './routes/address.js'
 import sub_address from './routes/sub_address.js'
 
 dotenv.config();
-
-firebase();
 
 var app = express();
 

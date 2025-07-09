@@ -1,134 +1,35 @@
+// routes/seed.js
+
 import express from 'express';
-import { getFirestore, doc, setDoc } from 'firebase/firestore';
+import admin from '../config/firebase.js';
 import { seeders } from '../database/index.js';
 
 const router = express.Router();
 const dataSeeders = seeders();
 
-router.post('/schools', async(req, res) => {
-    try {
-        const db = getFirestore();
+router.post('/schools', async (req, res) => {
+  try {
+    const db = admin.firestore();
 
-        for (const value of dataSeeders.schools) {
-            await setDoc(doc(db, "schools", value.school_id), {
-                id: value.school_id,
-                name: value.name,
-                accreditation: value.akreditas,
-                facility: value.fasilitas,
-                type: value.type,
-                category: value.category,
-                link_profile: value.link_profile,
-            })
+    for (const value of dataSeeders.schools) {
+      await db.collection('schools').doc(value.school_id).set({
+        id: value.school_id,
+        name: value.name,
+        accreditation: value.akreditas,
+        facility: value.fasilitas,
+        type: value.type,
+        category: value.category,
+        link_profile: value.link_profile,
+      });
 
-            console.log(`data ${value.school_id} berhasil ditambahkan!`)
-        }
-        
-        res.status(200).send({
-            message: 'seeders schools succsess!'
-        });
-    } catch (error) {
-        console.error('Error seeding data:', error);
-        res.status(500).send('Error seeding data');
+      console.log(`Data ${value.school_id} berhasil ditambahkan!`);
     }
-})
 
-router.post('/address', async(req, res) => {
-    try {
-        const db = getFirestore();
-
-        for (const value of dataSeeders.address) {
-            await setDoc(doc(db, "address", value.id), {
-                id: value.id,
-                name: value.name
-            })
-
-            console.log(`data ${value.id} berhasil ditambahkan!`)
-        }
-        
-        res.status(200).send({
-            message: 'seeders schools succsess!'
-        });
-    } catch (error) {
-        console.error('Error seeding data:', error);
-        res.status(500).send('Error seeding data');
-    }
-})
-
-router.post('/distance', async(req, res) => {
-    try {        
-        const db = getFirestore();
-        for (const value of dataSeeders.distance) {
-            await setDoc(doc(db, "distance", value.id), {
-                id: value.id,
-                school_id: value.school_id,
-                priority_1: {
-                    address_id: value.priority_1,
-                    value: 1
-                },
-                priority_2: {
-                    address_id: value.priority_2,
-                    value: 2
-                },
-                priority_3: {
-                    address_id: value.priority_3,
-                    value: 3
-                }
-            })
-
-            console.log(`data ${value.id} berhasil ditambahkan!`)
-        }
-
-        res.status(200).send({
-            message: 'seeders distance succsess!'
-        });
-    }catch(error) {
-        console.error('Error seeding data:', error);
-        res.status(500).send('Error seeding data');
-    }
-})
-
-router.post('/zonation', async(req, res) => {
-    try {        
-        const db = getFirestore();
-        for (const value of dataSeeders.zonation) {
-            await setDoc(doc(db, "zonation", value.id), {
-                id: value.id,
-                name: value.name,
-                address: value.address,
-            })
-
-            console.log(`data ${value.id} berhasil ditambahkan!`)
-        }
-
-        res.status(200).send({
-            message: 'seeders zonation succsess!'
-        });
-    }catch(error) {
-        console.error('Error seeding data:', error);
-        res.status(500).send('Error seeding data');
-    }
-})
-
-router.post('/sub-address', async(req, res) => {
-    try {        
-        const db = getFirestore();
-        for (const value of dataSeeders.sub_address) {
-            await setDoc(doc(db, "sub-address", value.id), {
-                id: value.id,
-                address_id: value.address_id,
-                name: value.name,
-            })
-
-            console.log(`data ${value.id} berhasil ditambahkan!`)
-        }
-
-        res.status(200).send({
-            message: 'seeders sub-address succsess!'
-        });
-    }catch(error) {
-        console.error('Error seeding data:', error);
-        res.status(500).send('Error seeding data');
-    }
-})
+    res.status(200).send({ message: 'Seeders schools success!' });
+  } catch (error) {
+    console.error('Error seeding data:', error);
+    res.status(500).send('Error seeding data');
+  }
+});
 
 export default router;

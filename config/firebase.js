@@ -1,13 +1,16 @@
-import { initializeApp } from "firebase/app"
+import admin from 'firebase-admin';
+import dotenv from 'dotenv'; // Menggunakan dotenv untuk memuat variabel lingkungan
 
-export default function firebase() {
-    initializeApp({
-        apiKey: process.env.apiKey,
-        authDomain: process.env.authDomain,
-        projectId: process.env.projectId,
-        storageBucket: process.env.storageBucket,
-        messagingSenderId: process.env.messagingSenderId,
-        appId: process.env.appId,
-        measurementId: process.env.measurementId
-    })
+dotenv.config();
+
+let credential = JSON.parse(
+  Buffer.from(process.env.GOOGLE_CREDENTIAL_BASE64, 'base64').toString('utf-8')
+);
+
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(credential),
+  });
 }
+
+export default admin;
