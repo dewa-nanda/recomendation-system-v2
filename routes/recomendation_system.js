@@ -148,17 +148,17 @@ router.post('/', schema, async (req, res) => {
   const swasta_filtered = filtered.filter(v => v.category === 'swasta');
 
   final_result = {
-    default: {
-      negeri: {
-        data: sortDataByFinalValue(negeri, false).slice(0, 10),
-        total: negeri.length
-      },
-      swasta: {
-        data: sortDataByFinalValue(swasta, false).slice(0, 10),
-        total: swasta.length
-      }
-    },
-    filtered: {
+    // default: {
+    //   negeri: {
+    //     data: sortDataByFinalValue(negeri, false).slice(0, 10),
+    //     total: negeri.length
+    //   },
+    //   swasta: {
+    //     data: sortDataByFinalValue(swasta, false).slice(0, 10),
+    //     total: swasta.length
+    //   }
+    // },
+    // filtered: {
       negeri: {
         data: negeri_filtered.slice(0, 10),
         total: negeri_filtered.length
@@ -167,7 +167,7 @@ router.post('/', schema, async (req, res) => {
         data: swasta_filtered.slice(0, 10),
         total: swasta_filtered.length
       }
-    }
+    // }
   };
 
   res.send({ fuzzyAhp: f, result: final_result });
